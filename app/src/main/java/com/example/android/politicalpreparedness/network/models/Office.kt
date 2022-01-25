@@ -1,6 +1,6 @@
 package com.example.android.politicalpreparedness.network.models
 
-import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.ui.representative.model.Representative
 import com.squareup.moshi.Json
 
 data class Office (

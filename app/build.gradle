@@ -6,14 +6,15 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildFeatures {
         dataBinding true
     }
+
     defaultConfig {
         applicationId 'com.example.android.politicalpreparedness'
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
     }
@@ -39,9 +40,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version_kotlin_serialization"
 
     // Constraint Layout
@@ -58,8 +59,8 @@ dependencies {
     implementation "androidx.core:core-ktx:$version_core"
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit: $version_retrofit"
-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
 
     // Moshi

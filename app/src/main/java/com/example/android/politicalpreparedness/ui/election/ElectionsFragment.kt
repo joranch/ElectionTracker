@@ -1,10 +1,11 @@
-package com.example.android.politicalpreparedness.election
+package com.example.android.politicalpreparedness.ui.election
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.android.politicalpreparedness.R
 
 class ElectionsFragment: Fragment() {
 
@@ -14,6 +15,8 @@ class ElectionsFragment: Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
+        val view = inflater.inflate(R.layout.fragment_election, container, false)
+        return view
         //TODO: Add ViewModel values and create ViewModel
 
         //TODO: Add binding values

@@ -23,12 +23,6 @@ To get started with this project, simply pull the repository and import the proj
 
 * NOTE: In order for this project to pull data, you will need to add your API Key to the project as a value in the CivicsHttpClient. You can generate an API Key from the [Google Developers Console](https://console.developers.google.com/)
 
-## Getting Started
-
-* For the most part, the TODOs in the project will guide you through getting the project completed. There is a general package architecture and *most* files are present. 
-* Hints are provided for tricky parts of the application that may extend beyond basic Android development skills.
-* As databinding is integral to the project architecture, it is important to be familiar with the IDE features such s cleaning and rebuilding the project as well as invalidating caches. 
-
 ## Suggested Workflow
 
 * It is recommend you save all beautification until the end of the project. Ensure functionality first, then clean up UI. While UI is a component of the application, it is best to deliver a functional product.
