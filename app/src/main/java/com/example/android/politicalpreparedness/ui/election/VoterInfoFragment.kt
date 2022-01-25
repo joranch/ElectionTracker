@@ -3,13 +3,26 @@ package com.example.android.politicalpreparedness.ui.election
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.android.politicalpreparedness.ElectionTrackerApplication
+import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 
 class VoterInfoFragment : Fragment() {
+
+    private var _binding: FragmentVoterInfoBinding? = null
+    val binding get() = _binding!!
+
+    private val viewModel: VoterInfoViewModel by viewModels {
+        VoterInfoViewModelFactory((activity?.application as ElectionTrackerApplication).database.electionDao)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
+        _binding = FragmentVoterInfoBinding.inflate(inflater, container, false)
+        return binding.root
         //TODO: Add ViewModel values and create ViewModel
 
         //TODO: Add binding values

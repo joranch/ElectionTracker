@@ -16,6 +16,7 @@ buildscript {
         version_glide = "4.11.0"
         version_play_services_location = "19.0.1"
         version_room = "2.4.1"
+        version_lifecycle = "2.4.0"
     }
 
     repositories {

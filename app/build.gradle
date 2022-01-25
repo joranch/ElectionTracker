@@ -39,6 +39,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation "androidx.appcompat:appcompat:1.4.1"
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
@@ -49,7 +51,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
@@ -71,9 +74,13 @@ dependencies {
     // Glide
     //TODO: Add Glide Implementation
 
+    implementation 'com.google.android.material:material:1.5.0'
+
     //Room
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+    implementation("androidx.room:room-ktx:$version_room")
+    annotationProcessor("androidx.room:room-compiler:$version_room")
 
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"
