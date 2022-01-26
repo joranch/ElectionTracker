@@ -16,28 +16,3 @@ It leverages the following components from the Jetpack library:
 * [Data Binding](https://developer.android.com/topic/libraries/data-binding/) with binding adapters
 * [Navigation](https://developer.android.com/topic/libraries/architecture/navigation/) with the SafeArgs plugin for parameter passing between fragments
 
-
-## Setting up the Repository
-
-To get started with this project, simply pull the repository and import the project into Android Studio. From there, deploy the project to an emulator or device. 
-
-* NOTE: In order for this project to pull data, you will need to add your API Key to the project as a value in the CivicsHttpClient. You can generate an API Key from the [Google Developers Console](https://console.developers.google.com/)
-
-## Suggested Workflow
-
-* It is recommend you save all beautification until the end of the project. Ensure functionality first, then clean up UI. While UI is a component of the application, it is best to deliver a functional product.
-* Start by getting all screens in the application to navigate to each other, even with dummy data. If needed, comment out stub code to get the application to compile. You will need to create actions in *nav_graph.xml* and UI elements to trigger the navigation. 
-* Create an API key and begin work on the Elections Fragment  and associated ViewModel. 
-	* Use the elections endpoint in the Civics API and requires no parameters.
-	* You will need to create a file to complete the step.
-	* This will require edits to the Manifest.
-	* Link the election to the Voter Info Fragment.
-* Begin work on the Voter Info Fragment and associated ViewModel.
-* Begin work on the Representative Fragment and associated ViewModel.
-	* This will require edits to Gradle.
-	* You will need to create a file to complete the step.
-
-
-
-## Report Issues
-Notice any issues with a repository? Please file a github issue in the repository.
