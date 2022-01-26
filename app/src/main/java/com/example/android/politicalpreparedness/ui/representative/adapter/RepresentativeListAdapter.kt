@@ -11,7 +11,7 @@
 //import com.example.android.politicalpreparedness.R
 //import com.example.android.politicalpreparedness.databinding.ViewholderRepresentativeBinding
 //import com.example.android.politicalpreparedness.network.models.Channel
-//import com.example.android.politicalpreparedness.ui.representative.model.Representative
+//import com.example.android.politicalpreparedness.model.Representative
 //
 //class RepresentativeListAdapter: ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback()){
 //

@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.ui.election
+package com.example.android.politicalpreparedness.ui.voterinfo
 
 import androidx.lifecycle.ViewModel
 import com.example.android.politicalpreparedness.database.ElectionDao

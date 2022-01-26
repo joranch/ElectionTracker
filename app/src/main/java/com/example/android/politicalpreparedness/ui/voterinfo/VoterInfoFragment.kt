@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.ui.election
+package com.example.android.politicalpreparedness.ui.voterinfo
 
 import android.os.Bundle
 import android.view.*

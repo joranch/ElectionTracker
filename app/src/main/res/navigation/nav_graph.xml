@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_representative"></fragment>
     <fragment
         android:id="@+id/voterInfoFragment"
-        android:name="com.example.android.politicalpreparedness.ui.election.VoterInfoFragment"
+        android:name="com.example.android.politicalpreparedness.ui.voterinfo.VoterInfoFragment"
         android:label="fragment_voter_info">
         <argument
             android:name="arg_election_id"
