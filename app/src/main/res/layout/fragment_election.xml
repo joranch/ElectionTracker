@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.example.android.politicalpreparedness.ui.election.ElectionsViewModel" />-->
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.ui.election.ElectionsViewModel" />
     </data>
 
 
@@ -15,9 +15,44 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add Upcoming Election Recycler and Header -->
+        <TextView
+            android:id="@+id/saved_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            android:text="@string/saved_elections"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Saved elections" />
 
-        <!-- TODO: Add Saved Election Recycler and Header -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/saved_elections_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_label" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/elections_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/elections_label" />
+
+        <TextView
+            android:id="@+id/elections_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            android:text="@string/upcoming_elections"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_elections_recyclerview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

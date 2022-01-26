@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.politicalpreparedness.ElectionTrackerApplication
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
+import com.example.android.politicalpreparedness.ui.election.adapter.ElectionListAdapter
 
 class ElectionsFragment: Fragment() {
 
@@ -19,8 +22,6 @@ class ElectionsFragment: Fragment() {
     private val viewModel: ElectionsViewModel by viewModels {
         ElectionsViewModelFactory((activity?.application as ElectionTrackerApplication).database.electionDao)
     }
-//        ElectionsViewModelFactory((activity?.application as ElectionsApplication).database.electionsDao())
-
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -29,9 +30,20 @@ class ElectionsFragment: Fragment() {
 
         _binding = FragmentElectionBinding.inflate(layoutInflater, container, false)
 
-//        binding.viewModel = viewModel
-        return binding.root
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
+        binding.savedElectionsRecyclerview.layoutManager = LinearLayoutManager(context)
+        binding.savedElectionsRecyclerview.adapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
+            findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it.id, it.division))
+        })
+
+        binding.electionsRecyclerview.layoutManager = LinearLayoutManager(context)
+        binding.electionsRecyclerview.adapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
+            findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it.id, it.division))
+        })
+
+        return binding.root
 
 
         //TODO: Add binding values
