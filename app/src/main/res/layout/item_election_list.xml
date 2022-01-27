@@ -6,11 +6,11 @@
     <data>
         <variable
             name="election"
-            type="com.example.android.politicalpreparedness.network.models.Election" />
+            type="com.example.android.electiontracker.network.models.Election" />
 
         <variable
             name="clickListener"
-            type="com.example.android.politicalpreparedness.ui.election.adapter.ElectionListAdapter.ElectionListener" />
+            type="com.example.android.electiontracker.ui.election.adapter.ElectionListAdapter.ElectionListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

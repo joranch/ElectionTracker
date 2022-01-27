@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Political Preparedness</string>
+    <string name="app_name">Election Tracker</string>
     <string name="ballot_image_content_description">Home screen logo image</string>
     <string name="upcoming_elections">Upcoming elections</string>
     <string name="find_my_representatives">Find my representatives</string>

@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.android.politicalpreparedness.MainActivity">
+        tools:context="com.example.android.electiontracker.MainActivity">
 
         <!-- TODO: Add title to toolbar -->
         <androidx.appcompat.widget.Toolbar

@@ -6,14 +6,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.android.politicalpreparedness.ui.election.ElectionsViewModel" />
+            type="com.example.android.electiontracker.ui.election.ElectionsViewModel" />
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.android.politicalpreparedness.MainActivity">
+        tools:context="com.example.android.electiontracker.MainActivity">
 
         <TextView
             android:id="@+id/saved_label"
