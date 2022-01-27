@@ -13,28 +13,22 @@
             type="com.example.android.electiontracker.ui.election.adapter.ElectionListAdapter.ElectionListener" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        android:clickable="true">
-
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/default_padding"
+            android:clickable="true"
+            android:onClick="@{() -> clickListener.onClick(election)}"
             >
 
             <TextView
                 android:id="@+id/title_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="@{election.name}"
                 tools:text="Some election somewhere" />
 
             <TextView
@@ -42,9 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/small_margin"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:text="@{election.electionDay.toString()}"
                 tools:text="Mon Jan 1 00:00 EDT 2022" />
         </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 </layout>

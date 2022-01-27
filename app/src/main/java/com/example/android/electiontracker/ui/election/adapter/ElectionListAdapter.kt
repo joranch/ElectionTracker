@@ -12,7 +12,8 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
     ListAdapter<Election, ElectionListAdapter.ElectionViewHolder>(ElectionDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElectionViewHolder {
-        return ElectionViewHolder(ItemElectionListBinding.inflate(LayoutInflater.from(parent.context)))
+        return ElectionViewHolder(ItemElectionListBinding
+            .inflate(LayoutInflater.from(parent.context),parent, false))
     }
 
     override fun onBindViewHolder(holder: ElectionViewHolder, position: Int) {
@@ -21,6 +22,7 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
 
     class ElectionViewHolder(private var binding: ItemElectionListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(election: Election, clickListener: ElectionListener) {
             binding.election = election
             binding.clickListener = clickListener

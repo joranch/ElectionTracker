@@ -1,22 +1,31 @@
 package com.example.android.electiontracker.database
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import com.example.android.electiontracker.network.models.Election
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ElectionDao {
 
-    //TODO: Add insert query
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(election: Election)
 
-    //TODO: Add select all election query
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(elections: List<Election>)
 
-    //TODO: Add select single election query
+    @Update
+    suspend fun update(election: Election)
 
-    //TODO: Add delete query
+    @Query("SELECT * FROM election_table ORDER BY electionDay")
+    fun getElections() : Flow<List<Election>>
 
-    //TODO: Add clear query
+    @Query("SELECT * FROM election_table WHERE id = :id")
+    fun get(id: String) : Flow<Election>
+
+    @Delete
+    suspend fun delete(election: Election)
+
+    @Query("DELETE FROM election_table")
+    suspend fun clearElections()
 
 }

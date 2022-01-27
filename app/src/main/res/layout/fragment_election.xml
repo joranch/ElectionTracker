@@ -25,15 +25,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:background="?attr/colorSecondary"
+            android:textColor="?attr/colorOnSecondary"
             tools:text="Saved elections" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saved_elections_recyclerview"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/saved_label" />
+        <TextView
+            android:id="@+id/elections_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            android:text="@string/upcoming_elections"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:background="?attr/colorSecondary"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saved_elections_recyclerview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/elections_recyclerview"
@@ -44,15 +59,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/elections_label" />
 
-        <TextView
-            android:id="@+id/elections_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_padding"
-            android:text="@string/upcoming_elections"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saved_elections_recyclerview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
