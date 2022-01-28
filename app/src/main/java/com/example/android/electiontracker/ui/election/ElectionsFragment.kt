@@ -88,4 +88,5 @@ class ElectionsFragment: Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

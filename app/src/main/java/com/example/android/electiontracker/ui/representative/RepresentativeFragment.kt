@@ -29,7 +29,7 @@ class DetailFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         _binding = FragmentRepresentativeBinding.inflate(inflater, container, false)
-
+        binding.viewModel = viewModel
         return binding.root
         //TODO: Establish bindings
 
@@ -38,7 +38,6 @@ class DetailFragment : Fragment() {
         //TODO: Populate Representative adapter
 
         //TODO: Establish button listeners for field and location search
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
