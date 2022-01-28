@@ -1,14 +1,19 @@
 package com.example.android.electiontracker.ui.voterinfo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.view.*
-import androidx.core.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.android.electiontracker.ElectionTrackerApplication
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentVoterInfoBinding
+import com.google.android.material.snackbar.Snackbar
+
 
 class VoterInfoFragment : Fragment() {
 
@@ -21,9 +26,11 @@ class VoterInfoFragment : Fragment() {
 
     val args: VoterInfoFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         _binding = FragmentVoterInfoBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -31,18 +38,6 @@ class VoterInfoFragment : Fragment() {
 
 
         return binding.root
-
-        //TODO: Populate voter info -- hide views without provided data.
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-        */
-
-
-        //TODO: Handle loading of URLs
-
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,7 +56,7 @@ class VoterInfoFragment : Fragment() {
         })
 
         viewModel.status.observe(viewLifecycleOwner, { state ->
-            when (state){
+            when (state) {
                 VoterInfoViewModel.LoadingState.DONE -> binding.followButton.isEnabled = true
                 VoterInfoViewModel.LoadingState.LOADING -> binding.followButton.isEnabled = false
             }
@@ -70,28 +65,59 @@ class VoterInfoFragment : Fragment() {
     }
 
     private fun setFollowButtonState(it: Boolean) {
-        when(it) {
-            true -> { binding.followButton.text = context?.resources?.getText(R.string.unfollow_election)}
-            else -> { binding.followButton.text = context?.resources?.getText(R.string.follow_election) }
+        when (it) {
+            true -> {
+                binding.followButton.text = context?.resources?.getText(R.string.unfollow_election)
+            }
+            else -> {
+                binding.followButton.text = context?.resources?.getText(R.string.follow_election)
+            }
         }
     }
 
     private fun stateLocationOnClick() {
-        TODO("Not yet implemented")
+        val infoUri =
+            viewModel.voterInfo.value?.state?.get(0)?.electionAdministrationBody?.votingLocationFinderUrl
+                ?: ""
+
+        if (infoUri.isNullOrEmpty()) {
+            Snackbar.make(
+                binding.root,
+                "Failed to open election location information",
+                Snackbar.LENGTH_SHORT
+            ).show()
+        } else {
+            launchActivityUrlIntent(infoUri)
+        }
     }
 
     private fun stateBallotOnClick() {
-        TODO("Not yet implemented")
+        var infoUri =
+            viewModel.voterInfo.value?.state?.get(0)?.electionAdministrationBody?.ballotInfoUrl
+                ?: ""
+
+        if (infoUri.isNullOrEmpty()) {
+            Snackbar.make(binding.root, "Failed to open ballot information", Snackbar.LENGTH_SHORT)
+                .show()
+        } else {
+            launchActivityUrlIntent(infoUri)
+        }
     }
 
     private fun followButtonOnClick() {
         viewModel.toggleFollowElection(args.argElection)
     }
 
+    private fun launchActivityUrlIntent(urlStr: String) {
+        val uri: Uri = Uri.parse(urlStr)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    //TODO: Create method to load URL intents
+
 
 }

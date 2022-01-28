@@ -44,12 +44,7 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     //TODO: Add var and methods to save and remove elections to local database
     //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
 
-//    init {
-//        checkElectionIsFollowed()
-//    }
-
     fun loadElectionInfo(election: Election) {
-//        _election.value = election
 //        _status.value = LoadingState.LOADING
 
         viewModelScope.launch {

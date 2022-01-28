@@ -10,7 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.electiontracker.ElectionTrackerApplication
 import com.example.android.electiontracker.databinding.FragmentElectionBinding
+import com.example.android.electiontracker.ui.election.ElectionsViewModel.Companion.EMPTY_SNACKBAR_INT
 import com.example.android.electiontracker.ui.election.adapter.ElectionListAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ElectionsFragment: Fragment() {
 
@@ -38,6 +40,15 @@ class ElectionsFragment: Fragment() {
 
         setupSavedElectionsRecyclerview()
         setupElectionsRecyclerview()
+
+        viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
+            if(it != EMPTY_SNACKBAR_INT)
+                Snackbar.make(binding.root, getText(it), Snackbar.LENGTH_SHORT).show()
+
+            viewModel.clearSnackbarMessage()
+        })
+
+        viewModel.getElections()
     }
 
     private fun setupElectionsRecyclerview() {
@@ -54,6 +65,7 @@ class ElectionsFragment: Fragment() {
                 electionAdapter.submitList(it)
             }
         })
+
     }
 
     private fun setupSavedElectionsRecyclerview() {
@@ -72,6 +84,8 @@ class ElectionsFragment: Fragment() {
         })
     }
 
-    //TODO: Refresh adapters when fragment loads
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -12,5 +12,11 @@
     <string name="election_info_text">Election Information %s</string>
     <string name="see_voter_locations">See voter locations</string>
     <string name="see_ballot_info">See ballot information</string>
+    <string name="error_open_ballot_info">Failed to open ballot information</string>
+    <string name="error_open_election_info">Failed to open election information</string>
+    <string name="voter_info_fragment_title">Voter information</string>
+    <string name="error_loading_elections">Failed to retrieve election information</string>
+
+
 
 </resources>

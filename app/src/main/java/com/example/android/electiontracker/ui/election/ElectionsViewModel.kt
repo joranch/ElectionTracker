@@ -1,7 +1,9 @@
 package com.example.android.electiontracker.ui.election
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.android.electiontracker.R
 import com.example.android.electiontracker.database.ElectionDao
 import com.example.android.electiontracker.network.CivicsApi
 import com.example.android.electiontracker.network.jsonadapter.ElectionAdapter
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 class ElectionsViewModel(val electionDao: ElectionDao): ViewModel() {
     companion object {
         const val TAG = "ElectionsViewModel"
+        const val EMPTY_SNACKBAR_INT = 0
     }
     //TODO: Create live data val for upcoming elections
     private var _elections = MutableLiveData<List<Election>>()
@@ -23,14 +26,10 @@ class ElectionsViewModel(val electionDao: ElectionDao): ViewModel() {
 
     val savedElections: LiveData<List<Election>> = electionDao.getElections().asLiveData()
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
+    private var _showSnackbarMessage = MutableLiveData<Int>()
+    val showSnackbarMessage: LiveData<Int> = _showSnackbarMessage
 
-    //TODO: Create functions to navigate to saved or upcoming election voter info
-    init {
-        getElections()
-    }
-
-    private fun getElections() {
+    fun getElections() {
         viewModelScope.launch {
             try {
                 val response = CivicsApi.getElections()
@@ -40,12 +39,12 @@ class ElectionsViewModel(val electionDao: ElectionDao): ViewModel() {
             } catch (e: Throwable){
                 Log.e(TAG, e.localizedMessage)
                 e.printStackTrace()
+                _showSnackbarMessage.value = R.string.error_loading_elections
             }
         }
     }
 
-    private fun getMockElections()  {
-
-
+    fun clearSnackbarMessage() {
+        _showSnackbarMessage.value = EMPTY_SNACKBAR_INT
     }
 }
