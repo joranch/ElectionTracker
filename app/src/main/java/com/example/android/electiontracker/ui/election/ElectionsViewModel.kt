@@ -4,7 +4,11 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.android.electiontracker.database.ElectionDao
 import com.example.android.electiontracker.network.CivicsApi
+import com.example.android.electiontracker.network.jsonadapter.ElectionAdapter
 import com.example.android.electiontracker.network.models.Election
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.launch
 
 
@@ -38,5 +42,10 @@ class ElectionsViewModel(val electionDao: ElectionDao): ViewModel() {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun getMockElections()  {
+
+
     }
 }

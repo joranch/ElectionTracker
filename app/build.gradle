@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.example.android.politicalpreparedness'
+        applicationId 'com.example.android.electiontracker'
         minSdkVersion 26
         targetSdkVersion 31
         versionCode 1

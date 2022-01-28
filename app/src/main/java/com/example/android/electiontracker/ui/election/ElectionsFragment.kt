@@ -27,7 +27,7 @@ class ElectionsFragment: Fragment() {
 
         _binding = FragmentElectionBinding.inflate(layoutInflater, container, false)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         return binding.root
@@ -44,10 +44,7 @@ class ElectionsFragment: Fragment() {
         binding.electionsRecyclerview.layoutManager = LinearLayoutManager(context)
         val electionAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
             findNavController().navigate(
-                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
-                    it.id,
-                    it.division
-                )
+                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it)
             )
         })
 
@@ -63,10 +60,7 @@ class ElectionsFragment: Fragment() {
         binding.savedElectionsRecyclerview.layoutManager = LinearLayoutManager(context)
         val savedElectionsAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
             findNavController().navigate(
-                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
-                    it.id,
-                    it.division
-                )
+                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it)
             )
         })
 

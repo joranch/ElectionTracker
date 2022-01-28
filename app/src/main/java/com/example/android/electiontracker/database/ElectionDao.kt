@@ -20,7 +20,7 @@ interface ElectionDao {
     fun getElections() : Flow<List<Election>>
 
     @Query("SELECT * FROM election_table WHERE id = :id")
-    fun get(id: String) : Flow<Election>
+    suspend fun get(id: Int) : Election?
 
     @Delete
     suspend fun delete(election: Election)

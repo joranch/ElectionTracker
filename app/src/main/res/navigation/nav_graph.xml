@@ -29,11 +29,8 @@
         android:name="com.example.android.electiontracker.ui.voterinfo.VoterInfoFragment"
         android:label="fragment_voter_info">
         <argument
-            android:name="arg_election_id"
-            app:argType="integer" />
-        <argument
-            android:name="arg_division"
-            app:argType="com.example.android.electiontracker.network.models.Division" />
+            android:name="arg_election"
+            app:argType="com.example.android.electiontracker.network.models.Election" />
     </fragment>
     <fragment
         android:id="@+id/electionsFragment"
