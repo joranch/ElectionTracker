@@ -16,7 +16,13 @@
     <string name="error_open_election_info">Failed to open election information</string>
     <string name="voter_info_fragment_title">Voter information</string>
     <string name="error_loading_elections">Failed to retrieve election information</string>
-
+    <string name="representative_search">Representative search</string>
+    <string name="address_line_1">Address line 1</string>
+    <string name="address_line_2">Address line 2</string>
+    <string name="city_text">City</string>
+    <string name="zip">Zip</string>
+    <string name="my_representatives">My representatives</string>
+    <string name="use_my_location">Use my location</string>
 
 
 </resources>

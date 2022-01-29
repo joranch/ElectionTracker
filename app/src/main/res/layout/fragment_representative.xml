@@ -22,92 +22,109 @@
 
             <TextView
                 android:id="@+id/search_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Find representatives"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold"
+                android:layout_margin="@dimen/small_margin"
+                android:text="@string/representative_search"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/address_line_1"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_title"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox">
+                app:layout_constraintTop_toBottomOf="@id/search_title">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                    android:hint="Address line 1" />
+                    android:hint="@string/address_line_1"
+                    android:inputType="textPostalAddress" />
             </com.google.android.material.textfield.TextInputLayout>
-<!--            <EditText-->
-<!--                android:id="@+id/address_line_1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:autofillHints="@string/address_line_1_text"-->
-<!--                android:ems="10"-->
-<!--                android:hint="Address line 1"-->
-<!--                android:inputType="textPostalAddress"-->
-<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/search_title" />-->
 
-            <EditText
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/address_line_2"
+                android:layout_margin="@dimen/small_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="@string/address_line_2_text"
-                android:ems="10"
-                android:hint="Address line 2"
-                android:inputType="textPostalAddress"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_line_1" />
+                app:layout_constraintTop_toBottomOf="@id/address_line_1">
 
-            <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/address_line_2"
+                    android:inputType="textPostalAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/city"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:autofillHints="@string/city_text"
-                android:ems="10"
-                android:hint="City"
-                android:inputType="textPostalAddress"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_margin="@dimen/small_margin"
+
+                app:layout_constraintEnd_toStartOf="@+id/state"
+                app:layout_constraintHorizontal_bias="0.18"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/address_line_2" />
+                app:layout_constraintTop_toBottomOf="@+id/address_line_2">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/city_text"
+                    android:hint="@string/city_text"
+                    android:inputType="textPostalAddress"
+                    android:minWidth="100dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/state"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:inputType="textPostalAddress"
+                android:layout_margin="@dimen/small_margin"
                 app:layout_constraintBottom_toBottomOf="@id/city"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/city"
-                app:layout_constraintTop_toTopOf="@id/city" />
+                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintStart_toEndOf="@+id/city"
+                app:layout_constraintTop_toTopOf="@id/city"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/zip"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:autofillHints="@string/zip_text"
-                android:ems="10"
-                android:hint="Zip"
-                android:inputType="textPostalAddress"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginVertical="@dimen/small_margin"
+                app:layout_constraintEnd_toEndOf="@+id/city"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/city" />
+                app:layout_constraintTop_toBottomOf="@+id/city">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/zip"
+                    android:hint="@string/zip"
+                    android:inputType="textPostalAddress"
+                    android:minWidth="100dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/search_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:text="Search"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/find_my_representatives"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/zip" />
 
             <Button
@@ -115,18 +132,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-                android:text="TEST"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/use_my_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/search_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/representatives_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TEXT"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
+            android:layout_marginVertical="@dimen/default_margin"
+            android:text="@string/my_representatives"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_form" />
 
