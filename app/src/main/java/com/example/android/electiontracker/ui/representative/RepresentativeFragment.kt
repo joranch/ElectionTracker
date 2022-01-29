@@ -1,28 +1,34 @@
 package com.example.android.electiontracker.ui.representative
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.android.electiontracker.databinding.FragmentRepresentativeBinding
 import com.example.android.electiontracker.network.models.Address
+import com.example.android.politicalpreparedness.ui.representative.adapter.RepresentativeListAdapter
 import java.util.Locale
 
 class DetailFragment : Fragment() {
 
     companion object {
-        //TODO: Add Constant for Location request
+        const val TAG = ""
     }
 
     private var _binding: FragmentRepresentativeBinding? = null
     val binding get() = _binding!!
 
-    //TODO: Declare ViewModel
     val viewModel: RepresentativeViewModel by viewModels()
+
+    private val runningQOrLater =
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -31,13 +37,15 @@ class DetailFragment : Fragment() {
         _binding = FragmentRepresentativeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         return binding.root
-        //TODO: Establish bindings
-
-        //TODO: Define and assign Representative adapter
-
-        //TODO: Populate Representative adapter
-
         //TODO: Establish button listeners for field and location search
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val listAdapter = RepresentativeListAdapter()
+        binding.representativesRecyclerView.adapter = listAdapter
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -54,9 +62,24 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun isPermissionGranted() : Boolean {
-        //TODO: Check if permission is already granted and return (true = granted, false = denied/other)
-        return true
+    private fun isPermissionGranted(): Boolean {
+        val fineLocationApproved = (
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ))
+
+        val backgroundLocationApproved =
+            if (runningQOrLater) {
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        )
+            } else {
+                true
+            }
+        return fineLocationApproved && backgroundLocationApproved
     }
 
     private fun getLocation() {

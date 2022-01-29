@@ -3,12 +3,13 @@ package com.example.android.electiontracker.ui.representative
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.android.electiontracker.model.Representative
 
 class RepresentativeViewModel: ViewModel() {
 
-    val loremIpsum: LiveData<String> = MutableLiveData<String>("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae gravida magna. Fusce eleifend felis dui, eget mattis ex luctus a. Mauris auctor ante eu dictum faucibus. In luctus turpis eget felis tempor, at consectetur mi finibus. Praesent nec ipsum vestibulum, ultricies ipsum eget, lobortis quam. Phasellus sit amet massa sed massa volutpat ornare tempor sed ipsum. Proin tincidunt, augue sed ultricies scelerisque, libero sem interdum nisl, a auctor nulla nibh ac lorem.")
-
     //TODO: Establish live data for representatives and address
+    private var _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>> = _representatives
 
     //TODO: Create function to fetch representatives from API from a provided address
 
