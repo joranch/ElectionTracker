@@ -40,9 +40,11 @@
                 app:layout_constraintTop_toBottomOf="@id/search_title">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_line_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/address_line_1"
+                    android:text="@{viewModel.address.line1}"
                     android:inputType="textPostalAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,9 +58,11 @@
                 app:layout_constraintTop_toBottomOf="@id/address_line_1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_line_2_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/address_line_2"
+                    android:text="@{viewModel.address.line2}"
                     android:inputType="textPostalAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,16 +71,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
-
                 app:layout_constraintEnd_toStartOf="@+id/state"
                 app:layout_constraintHorizontal_bias="0.18"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/address_line_2">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/city_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/city_text"
+                    android:text="@{viewModel.address.city}"
                     android:hint="@string/city_text"
                     android:inputType="textPostalAddress"
                     android:minWidth="100dp" />
@@ -106,11 +111,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/city">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/zip_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/zip"
                     android:hint="@string/zip"
-                    android:inputType="textPostalAddress"
+                    android:text="@{viewModel.address.zip}"
+                    android:inputType="number"
+                    android:maxLength="5"
                     android:minWidth="100dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/find_my_representatives"
                 app:layout_constraintEnd_toEndOf="parent"

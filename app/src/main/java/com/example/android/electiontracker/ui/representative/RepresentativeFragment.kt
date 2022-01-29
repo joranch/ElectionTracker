@@ -1,27 +1,46 @@
 package com.example.android.electiontracker.ui.representative
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.provider.Settings
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.android.electiontracker.BuildConfig
+import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentRepresentativeBinding
 import com.example.android.electiontracker.network.models.Address
 import com.example.android.politicalpreparedness.ui.representative.adapter.RepresentativeListAdapter
-import java.util.Locale
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
-class DetailFragment : Fragment() {
+class RepresentativeFragment : Fragment() {
 
     companion object {
-        const val TAG = ""
+        const val TAG = "RepresentativeFragment"
+        private const val REQUEST_LOCATION_PERMISSION = 99
+        private const val LOCATION_REQUEST_CODE = 98
     }
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var _binding: FragmentRepresentativeBinding? = null
     val binding get() = _binding!!
 
@@ -30,14 +49,15 @@ class DetailFragment : Fragment() {
     private val runningQOrLater =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         _binding = FragmentRepresentativeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         return binding.root
-        //TODO: Establish button listeners for field and location search
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,20 +66,44 @@ class DetailFragment : Fragment() {
         val listAdapter = RepresentativeListAdapter()
         binding.representativesRecyclerView.adapter = listAdapter
 
-    }
+        binding.locationButton.setOnClickListener {
+            checkDeviceLocationSettingsAndGetLocation()
+        }
+        binding.searchButton.setOnClickListener {
+            hideKeyboard()
+            viewModel.getRepresentatives()
+        }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        //TODO: Handle location permission result to get location on permission granted
+        viewModel.representatives.observe(viewLifecycleOwner, {
+            it?.let { listAdapter.submitList(it) }
+        })
+
+        viewModel.address.observe(viewLifecycleOwner, { address ->
+            binding.addressLineText.setText(address.line1)
+            binding.addressLine2Text.setText(address.line2)
+            binding.cityText.setText(address.city)
+            binding.zipText.setText(address.zip)
+        })
+
     }
 
     private fun checkLocationPermissions(): Boolean {
         return if (isPermissionGranted()) {
             true
         } else {
-            //TODO: Request Location permissions
+            requestRequiredPermissions()
             false
         }
+    }
+
+
+    private fun requestRequiredPermissions() {
+        if (isPermissionGranted())
+            return
+
+        requestPermissions(
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION
+        )
     }
 
     private fun isPermissionGranted(): Boolean {
@@ -70,30 +114,131 @@ class DetailFragment : Fragment() {
                             Manifest.permission.ACCESS_FINE_LOCATION
                         ))
 
-        val backgroundLocationApproved =
-            if (runningQOrLater) {
-                PackageManager.PERMISSION_GRANTED ==
-                        ActivityCompat.checkSelfPermission(
-                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                        )
-            } else {
-                true
-            }
-        return fineLocationApproved && backgroundLocationApproved
+//        val backgroundLocationApproved =
+//            if (runningQOrLater) {
+//                PackageManager.PERMISSION_GRANTED ==
+//                        ActivityCompat.checkSelfPermission(
+//                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//                        )
+//            } else {
+//                true
+//            }
+        return fineLocationApproved
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            checkDeviceLocationSettingsAndGetLocation(false)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        Log.d(TAG, "onRequestPermissionResult")
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLocation()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    getText(R.string.error_location_permission_required),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(R.string.settings) {
+                        startActivity(Intent().apply {
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                    }.show()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
-        //TODO: Get location from LocationServices
-        //TODO: The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
+        if (!checkLocationPermissions())
+            return
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+
+                location?.let {
+                    Log.d(TAG, location.toString())
+                    val address = geoCodeLocation(location)
+                    viewModel.setAddress(address)
+                }
+            }
+            .addOnFailureListener {
+                Log.e(TAG, it.localizedMessage)
+                it.printStackTrace()
+                Snackbar.make(
+                    binding.root,
+                    getText(R.string.error_location_not_found),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+    }
+
+    private fun checkDeviceLocationSettingsAndGetLocation(resolve: Boolean = true) {
+        if (!resolve) {
+            getLocation()
+            return
+        }
+
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val settingsClient = LocationServices.getSettingsClient(requireActivity())
+
+        val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
+        locationSettingsResponseTask.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException && resolve) {
+                try {
+                    startIntentSenderForResult(
+                        exception.resolution.intentSender,
+                        LOCATION_REQUEST_CODE,
+                        null, 0, 0, 0, null
+                    )
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    Log.d(TAG, "Error getting location settings resolution: " + sendEx.message)
+                }
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    R.string.error_location_disabled, Snackbar.LENGTH_LONG
+                ).setAction(android.R.string.ok) {
+                    checkDeviceLocationSettingsAndGetLocation()
+                }.show()
+            }
+        }
+        locationSettingsResponseTask.addOnCompleteListener {
+            if (it.isSuccessful) {
+                getLocation()
+            }
+        }
     }
 
     private fun geoCodeLocation(location: Location): Address {
         val geocoder = Geocoder(context, Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                .map { address ->
-                    Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
-                }
-                .first()
+            .map { address ->
+                Address(
+                    address.thoroughfare,
+                    address.subThoroughfare,
+                    address.locality,
+                    address.adminArea,
+                    address.postalCode
+                )
+            }
+            .first()
     }
 
     private fun hideKeyboard() {

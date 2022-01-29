@@ -7,13 +7,16 @@
     <string name="saved_elections">Saved elections</string>
     <string name="follow_election">Follow election</string>
     <string name="unfollow_election">Unfollow election</string>
-
+    <string name="settings">Settings</string>
 
     <string name="election_info_text">Election Information %s</string>
     <string name="see_voter_locations">See voter locations</string>
     <string name="see_ballot_info">See ballot information</string>
     <string name="error_open_ballot_info">Failed to open ballot information</string>
     <string name="error_open_election_info">Failed to open election information</string>
+    <string name="error_location_disabled">You need to enable location for your device in order to find your location.</string>
+    <string name="error_location_permission_required">You need to enable location in order to find your location</string>
+    <string name="error_location_not_found">Couldn\'t find your location</string>
     <string name="voter_info_fragment_title">Voter information</string>
     <string name="error_loading_elections">Failed to retrieve election information</string>
     <string name="representative_search">Representative search</string>

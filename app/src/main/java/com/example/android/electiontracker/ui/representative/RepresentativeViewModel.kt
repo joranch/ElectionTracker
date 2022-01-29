@@ -1,5 +1,6 @@
 package com.example.android.electiontracker.ui.representative
 
+import com.example.android.electiontracker.network.models.Address
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,9 @@ class RepresentativeViewModel: ViewModel() {
     //TODO: Establish live data for representatives and address
     private var _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = _representatives
+
+    private var _address = MutableLiveData<Address>()
+    val address: LiveData<Address> = _address
 
     //TODO: Create function to fetch representatives from API from a provided address
 
@@ -24,7 +28,13 @@ class RepresentativeViewModel: ViewModel() {
 
      */
 
-    //TODO: Create function get address from geo location
+    fun setAddress(address: Address) {
+        _address.value = address
+    }
+
+    fun getRepresentatives(address: Address) {
+
+    }
 
     //TODO: Create function to get address from individual fields
 
