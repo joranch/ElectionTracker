@@ -15,19 +15,19 @@
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
+            android:id="@+id/search_form"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_title"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:id="@+id/search_form" />
+            android:layout_width="0dp" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <Constraint android:id="@id/search_form"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@id/search_title"/>
     </ConstraintSet>
 </MotionScene>
