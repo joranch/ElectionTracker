@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_margin"
                 app:layout_constraintEnd_toStartOf="@+id/state"
-                app:layout_constraintHorizontal_bias="0.18"
+                app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/address_line_2">
 
@@ -93,9 +93,10 @@
                 android:layout_height="0dp"
                 android:inputType="textPostalAddress"
                 android:layout_margin="@dimen/small_margin"
+                android:entries="@{viewModel.states}"
                 app:layout_constraintBottom_toBottomOf="@id/city"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintStart_toEndOf="@+id/city"
                 app:layout_constraintTop_toTopOf="@id/city"
                 tools:ignore="SpeakableTextPresentCheck" />

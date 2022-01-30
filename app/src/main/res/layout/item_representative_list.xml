@@ -19,7 +19,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_connection_error" />
+            app:srcCompat="@drawable/ic_connection_error"
+            app:imageUrl="@{representative.official.photoUrl}"/>
 
         <TextView
             android:id="@+id/title_text"
@@ -29,7 +30,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:text="TextView"
+            android:text="@{representative.office.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/photo_image"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:text="TextView"
+            android:text="@{representative.official.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title_text"
             app:layout_constraintTop_toBottomOf="@+id/title_text"
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"
-            android:text="TextView"
+            android:text="@{representative.official.party}"
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="@+id/name_text"
             app:layout_constraintTop_toBottomOf="@+id/name_text"

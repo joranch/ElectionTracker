@@ -2,9 +2,7 @@ package com.example.android.electiontracker.network
 
 import android.util.Log
 import com.example.android.electiontracker.network.jsonadapter.ElectionAdapter
-import com.example.android.electiontracker.network.models.Election
-import com.example.android.electiontracker.network.models.ElectionResponse
-import com.example.android.electiontracker.network.models.VoterInfoResponse
+import com.example.android.electiontracker.network.models.*
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -45,9 +43,8 @@ private interface CivicsApiService {
         @Query("electionId") electionId: Int
     ) : VoterInfoResponse
 
-    //TODO: Add representatives API Call
     @GET("representatives")
-    suspend fun getRepresentativesByLocation(address: String)
+    suspend fun getRepresentativesByLocation(@Query("address") address: String) : RepresentativeResponse
 }
 
 object CivicsApi {
@@ -61,5 +58,9 @@ object CivicsApi {
 
     suspend fun getVoterInfo(address: String, electionId: Int) : VoterInfoResponse {
         return retrofitService.getVoterInfo(address, electionId)
+    }
+
+    suspend fun getRepresentatives(address: String) : RepresentativeResponse {
+        return retrofitService.getRepresentativesByLocation(address)
     }
 }

@@ -30,6 +30,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
+import java.lang.Exception
 import java.util.*
 
 class RepresentativeFragment : Fragment() {
@@ -46,9 +47,6 @@ class RepresentativeFragment : Fragment() {
 
     val viewModel: RepresentativeViewModel by viewModels()
 
-    private val runningQOrLater =
-        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +60,7 @@ class RepresentativeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setStates(resources.getStringArray(R.array.states).toList())
 
         val listAdapter = RepresentativeListAdapter()
         binding.representativesRecyclerView.adapter = listAdapter
@@ -71,7 +70,16 @@ class RepresentativeFragment : Fragment() {
         }
         binding.searchButton.setOnClickListener {
             hideKeyboard()
-            viewModel.getRepresentatives()
+
+            viewModel.getRepresentatives(
+                viewModel.createAndSetAddress(
+                    binding.addressLineText.text.toString(),
+                    binding.addressLine2Text.text.toString(),
+                    binding.cityText.text.toString(),
+                    binding.zipText.text.toString(),
+                    binding.state.selectedItemPosition,
+                )
+            )
         }
 
         viewModel.representatives.observe(viewLifecycleOwner, {
@@ -83,6 +91,7 @@ class RepresentativeFragment : Fragment() {
             binding.addressLine2Text.setText(address.line2)
             binding.cityText.setText(address.city)
             binding.zipText.setText(address.zip)
+            binding.state.setSelection(viewModel.getSelectedAddressStateIndex())
         })
 
     }
@@ -114,15 +123,6 @@ class RepresentativeFragment : Fragment() {
                             Manifest.permission.ACCESS_FINE_LOCATION
                         ))
 
-//        val backgroundLocationApproved =
-//            if (runningQOrLater) {
-//                PackageManager.PERMISSION_GRANTED ==
-//                        ActivityCompat.checkSelfPermission(
-//                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                        )
-//            } else {
-//                true
-//            }
         return fineLocationApproved
     }
 
@@ -171,8 +171,17 @@ class RepresentativeFragment : Fragment() {
 
                 location?.let {
                     Log.d(TAG, location.toString())
-                    val address = geoCodeLocation(location)
-                    viewModel.setAddress(address)
+
+                    try {
+                        val address = geoCodeLocation(location)
+                        viewModel.setAddress(address)
+                    } catch (e: Throwable) {
+                        Snackbar.make(
+                            binding.root,
+                            getText(R.string.error_location_parse_geocode),
+                            Snackbar.LENGTH_LONG
+                        ).show() //
+                    }
                 }
             }
             .addOnFailureListener {
@@ -187,11 +196,6 @@ class RepresentativeFragment : Fragment() {
     }
 
     private fun checkDeviceLocationSettingsAndGetLocation(resolve: Boolean = true) {
-        if (!resolve) {
-            getLocation()
-            return
-        }
-
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
@@ -200,29 +204,36 @@ class RepresentativeFragment : Fragment() {
 
         val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
         locationSettingsResponseTask.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException && resolve) {
-                try {
-                    startIntentSenderForResult(
-                        exception.resolution.intentSender,
-                        LOCATION_REQUEST_CODE,
-                        null, 0, 0, 0, null
-                    )
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    Log.d(TAG, "Error getting location settings resolution: " + sendEx.message)
-                }
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    R.string.error_location_disabled, Snackbar.LENGTH_LONG
-                ).setAction(android.R.string.ok) {
-                    checkDeviceLocationSettingsAndGetLocation()
-                }.show()
-            }
+            handleLocationResponseException(exception, resolve)
         }
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 getLocation()
             }
+        }
+    }
+
+    private fun handleLocationResponseException(
+        exception: Exception,
+        resolve: Boolean
+    ) {
+        if (exception is ResolvableApiException && resolve) {
+            try {
+                startIntentSenderForResult(
+                    exception.resolution.intentSender,
+                    LOCATION_REQUEST_CODE,
+                    null, 0, 0, 0, null
+                )
+            } catch (sendEx: IntentSender.SendIntentException) {
+                Log.d(TAG, "Error getting location settings resolution: " + sendEx.message)
+            }
+        } else {
+            Snackbar.make(
+                binding.root,
+                R.string.error_location_disabled, Snackbar.LENGTH_LONG
+            ).setAction(android.R.string.ok) {
+                checkDeviceLocationSettingsAndGetLocation()
+            }.show()
         }
     }
 
