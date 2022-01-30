@@ -173,6 +173,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_form" />
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/representatives_recycler_view"
             android:layout_width="0dp"
@@ -182,9 +183,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/representatives_title">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@id/representatives_title"/>
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

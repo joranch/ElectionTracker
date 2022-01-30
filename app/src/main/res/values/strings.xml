@@ -18,6 +18,8 @@
     <string name="error_location_permission_required">You need to enable location in order to find your location</string>
     <string name="error_location_not_found">Couldn\'t find your location</string>
     <string name="error_location_parse_geocode">Something went wrong finding your location</string>
+    <string name="error_representative_search">Something went wrong looking up your representative</string>
+    <string name="error_state_required">Please select a state to begin search</string>
     <string name="voter_info_fragment_title">Voter information</string>
     <string name="error_loading_elections">Failed to retrieve election information</string>
     <string name="representative_search">Representative search</string>

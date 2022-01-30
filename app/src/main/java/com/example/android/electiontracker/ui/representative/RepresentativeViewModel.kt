@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.electiontracker.R
+import com.example.android.electiontracker.model.LoadingState
 import com.example.android.electiontracker.model.Representative
 import com.example.android.electiontracker.network.CivicsApi
 import com.example.android.electiontracker.network.models.Address
+import com.example.android.electiontracker.ui.election.ElectionsViewModel
 import kotlinx.coroutines.launch
 
 class RepresentativeViewModel : ViewModel() {
@@ -16,7 +19,6 @@ class RepresentativeViewModel : ViewModel() {
         const val STATE_NOT_SELECTED = 0
     }
 
-    //TODO: Establish live data for representatives and address
     private var _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = _representatives
 
@@ -25,6 +27,9 @@ class RepresentativeViewModel : ViewModel() {
 
     private val _states = MutableLiveData<List<String>>()
     val states: LiveData<List<String>> = _states
+
+    private var _showSnackbarMessage = MutableLiveData<Int>()
+    val showSnackbarMessage: LiveData<Int> = _showSnackbarMessage
 
     fun setAddress(address: Address) {
         _address.value = address
@@ -50,9 +55,14 @@ class RepresentativeViewModel : ViewModel() {
 
                 _representatives.value = representativeList
             } catch (e: Throwable) {
+                _showSnackbarMessage.value = R.string.error_representative_search
                 e.printStackTrace()
             }
         }
+    }
+
+    fun clearSnackbarMessage() {
+        _showSnackbarMessage.value = ElectionsViewModel.EMPTY_SNACKBAR_INT
     }
 
     private fun getSelectedState(stateIndex: Int): String {

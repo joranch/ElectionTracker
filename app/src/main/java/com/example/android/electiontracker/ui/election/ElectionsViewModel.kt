@@ -14,13 +14,13 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.launch
 
 
-//TODO: Construct ViewModel and provide election datasource
+
 class ElectionsViewModel(val electionDao: ElectionDao): ViewModel() {
     companion object {
         const val TAG = "ElectionsViewModel"
         const val EMPTY_SNACKBAR_INT = 0
     }
-    //TODO: Create live data val for upcoming elections
+
     private var _elections = MutableLiveData<List<Election>>()
     val elections: LiveData<List<Election>> = _elections
 

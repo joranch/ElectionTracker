@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.electiontracker.database.ElectionDao
+import com.example.android.electiontracker.model.LoadingState
 import com.example.android.electiontracker.network.CivicsApi
 import com.example.android.electiontracker.network.models.Election
 import com.example.android.electiontracker.network.models.VoterInfoResponse
@@ -19,12 +20,6 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     companion object {
         const val TAG = "VoterInfoViewModel"
         const val DEFAULT_ADDRESS = "ny"
-    }
-
-    enum class LoadingState{
-        LOADING,
-        ERROR,
-        DONE
     }
 
     private var _election = MutableLiveData<Election>()
@@ -39,10 +34,6 @@ class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
     private var _status = MutableLiveData<LoadingState>()
     val status: LiveData<LoadingState> = _status
 
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
 
     fun loadElectionInfo(election: Election) {
 //        _status.value = LoadingState.LOADING

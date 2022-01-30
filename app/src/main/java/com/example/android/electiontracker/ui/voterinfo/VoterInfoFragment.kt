@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.android.electiontracker.ElectionTrackerApplication
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentVoterInfoBinding
+import com.example.android.electiontracker.model.LoadingState
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -57,10 +58,9 @@ class VoterInfoFragment : Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner, { state ->
             when (state) {
-                VoterInfoViewModel.LoadingState.DONE -> binding.followButton.isEnabled = true
-                VoterInfoViewModel.LoadingState.LOADING -> binding.followButton.isEnabled = false
+                LoadingState.DONE -> binding.followButton.isEnabled = true
+                LoadingState.LOADING -> binding.followButton.isEnabled = false
             }
-
         })
     }
 

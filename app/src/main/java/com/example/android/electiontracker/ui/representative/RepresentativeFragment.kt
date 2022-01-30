@@ -23,6 +23,7 @@ import com.example.android.electiontracker.BuildConfig
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentRepresentativeBinding
 import com.example.android.electiontracker.network.models.Address
+import com.example.android.electiontracker.ui.election.ElectionsViewModel
 import com.example.android.politicalpreparedness.ui.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,7 +31,6 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
-import java.lang.Exception
 import java.util.*
 
 class RepresentativeFragment : Fragment() {
@@ -42,6 +42,7 @@ class RepresentativeFragment : Fragment() {
     }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var listAdapter: RepresentativeListAdapter
     private var _binding: FragmentRepresentativeBinding? = null
     val binding get() = _binding!!
 
@@ -62,26 +63,14 @@ class RepresentativeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setStates(resources.getStringArray(R.array.states).toList())
 
-        val listAdapter = RepresentativeListAdapter()
+        listAdapter = RepresentativeListAdapter()
         binding.representativesRecyclerView.adapter = listAdapter
 
-        binding.locationButton.setOnClickListener {
-            checkDeviceLocationSettingsAndGetLocation()
-        }
-        binding.searchButton.setOnClickListener {
-            hideKeyboard()
+        setUpClickListeners()
+        setUpObservers()
+    }
 
-            viewModel.getRepresentatives(
-                viewModel.createAndSetAddress(
-                    binding.addressLineText.text.toString(),
-                    binding.addressLine2Text.text.toString(),
-                    binding.cityText.text.toString(),
-                    binding.zipText.text.toString(),
-                    binding.state.selectedItemPosition,
-                )
-            )
-        }
-
+    private fun setUpObservers() {
         viewModel.representatives.observe(viewLifecycleOwner, {
             it?.let { listAdapter.submitList(it) }
         })
@@ -94,6 +83,38 @@ class RepresentativeFragment : Fragment() {
             binding.state.setSelection(viewModel.getSelectedAddressStateIndex())
         })
 
+        viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
+            if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT)
+                Snackbar.make(binding.root, getText(it), Snackbar.LENGTH_SHORT).show()
+
+            viewModel.clearSnackbarMessage()
+        })
+    }
+
+    private fun setUpClickListeners() {
+        binding.locationButton.setOnClickListener {
+            hideKeyboard()
+            checkDeviceLocationSettingsAndGetLocation()
+        }
+        binding.searchButton.setOnClickListener {
+            hideKeyboard()
+            performSearchClick()
+        }
+    }
+
+    private fun performSearchClick() {
+        val address = viewModel.createAndSetAddress(
+            binding.addressLineText.text.toString(),
+            binding.addressLine2Text.text.toString(),
+            binding.cityText.text.toString(),
+            binding.zipText.text.toString(),
+            binding.state.selectedItemPosition,
+        )
+        if (address.state.isNullOrEmpty()) {
+            Snackbar.make(binding.root, R.string.error_state_required, Snackbar.LENGTH_SHORT).show()
+        } else {
+            viewModel.getRepresentatives(address)
+        }
     }
 
     private fun checkLocationPermissions(): Boolean {
@@ -257,4 +278,8 @@ class RepresentativeFragment : Fragment() {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

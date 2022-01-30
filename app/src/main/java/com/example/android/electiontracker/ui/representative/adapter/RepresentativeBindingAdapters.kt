@@ -6,14 +6,6 @@ import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 
-@BindingAdapter("profileImage")
-fun fetchImage(view: ImageView, src: String?) {
-    src?.let {
-        val uri = src.toUri().buildUpon().scheme("https").build()
-        //TODO: Add Glide call to load image and circle crop - user ic_profile as a placeholder and for errors.
-    }
-}
-
 @BindingAdapter("stateValue")
 fun Spinner.setNewValue(value: String?) {
     val adapter = toTypedAdapter<String>(this.adapter as ArrayAdapter<*>)
