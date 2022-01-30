@@ -19,6 +19,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.example.android.electiontracker.BuildConfig
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentRepresentativeBinding
@@ -65,7 +67,7 @@ class RepresentativeFragment : Fragment() {
 
         listAdapter = RepresentativeListAdapter()
         binding.representativesRecyclerView.adapter = listAdapter
-
+        binding.state.setSelection(0)
         setUpClickListeners()
         setUpObservers()
     }
@@ -103,16 +105,17 @@ class RepresentativeFragment : Fragment() {
     }
 
     private fun performSearchClick() {
-        val address = viewModel.createAndSetAddress(
-            binding.addressLineText.text.toString(),
-            binding.addressLine2Text.text.toString(),
-            binding.cityText.text.toString(),
-            binding.zipText.text.toString(),
-            binding.state.selectedItemPosition,
-        )
-        if (address.state.isNullOrEmpty()) {
+        if (binding.state.selectedItemPosition == 0) {
+            YoYo.with(Techniques.Pulse).duration(500).repeat(3).playOn(binding.state)
             Snackbar.make(binding.root, R.string.error_state_required, Snackbar.LENGTH_SHORT).show()
         } else {
+            val address = viewModel.createAndSetAddress(
+                binding.addressLineText.text.toString(),
+                binding.addressLine2Text.text.toString(),
+                binding.cityText.text.toString(),
+                binding.zipText.text.toString(),
+                binding.state.selectedItemPosition,
+            )
             viewModel.getRepresentatives(address)
         }
     }

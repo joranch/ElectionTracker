@@ -66,7 +66,7 @@ class RepresentativeViewModel : ViewModel() {
     }
 
     private fun getSelectedState(stateIndex: Int): String {
-        return states.value!!.toList()[stateIndex]
+        return states.value?.get(stateIndex) ?: ""
     }
 
     fun createAndSetAddress(
