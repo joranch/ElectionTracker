@@ -26,17 +26,6 @@ class RepresentativeViewModel : ViewModel() {
     private val _states = MutableLiveData<List<String>>()
     val states: LiveData<List<String>> = _states
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
     fun setAddress(address: Address) {
         _address.value = address
     }

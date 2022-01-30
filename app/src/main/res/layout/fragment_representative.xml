@@ -44,16 +44,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/address_line_1"
-                    android:text="@{viewModel.address.line1}"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:text="@{viewModel.address.line1}" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/address_line_2"
-                android:layout_margin="@dimen/small_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/address_line_1">
 
@@ -62,8 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/address_line_2"
-                    android:text="@{viewModel.address.line2}"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:text="@{viewModel.address.line2}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -81,19 +81,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/city_text"
-                    android:text="@{viewModel.address.city}"
                     android:hint="@string/city_text"
                     android:inputType="textPostalAddress"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"
+                    android:text="@{viewModel.address.city}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/state"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:inputType="textPostalAddress"
                 android:layout_margin="@dimen/small_margin"
                 android:entries="@{viewModel.states}"
+                android:inputType="textPostalAddress"
                 app:layout_constraintBottom_toBottomOf="@id/city"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.7"
@@ -105,8 +105,8 @@
                 android:id="@+id/zip"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginVertical="@dimen/small_margin"
+                android:layout_marginStart="@dimen/small_margin"
                 app:layout_constraintEnd_toEndOf="@+id/city"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city">
@@ -117,10 +117,10 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="@string/zip"
                     android:hint="@string/zip"
-                    android:text="@{viewModel.address.zip}"
                     android:inputType="number"
                     android:maxLength="5"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"
+                    android:text="@{viewModel.address.zip}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -156,6 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/default_margin"
             android:text="@string/my_representatives"
+            android:layout_marginHorizontal="@dimen/small_margin"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_form" />
