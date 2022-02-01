@@ -97,10 +97,10 @@ class RepresentativeFragment : Fragment() {
         })
 
         viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
-            if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT)
-                Snackbar.make(binding.root, getText(it), Snackbar.LENGTH_SHORT).show()
-
-            viewModel.clearSnackbarMessage()
+            if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT){
+                Snackbar.make(requireView(), getText(it), Snackbar.LENGTH_SHORT).show()
+                viewModel.clearSnackbarMessage()
+            }
         })
     }
 

@@ -1,5 +1,6 @@
 package com.example.android.electiontracker.network.jsonadapter
 
+import android.util.Log
 import com.example.android.electiontracker.network.models.Division
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
@@ -13,10 +14,19 @@ class ElectionAdapter {
     fun divisionFromJson (ocdDivisionId: String): Division {
         val countryDelimiter = "country:"
         val stateDelimiter = "state:"
+        val districtDelimiter = "district:"
+
         val country = ocdDivisionId.substringAfter(countryDelimiter,"")
                 .substringBefore("/")
-        val state = ocdDivisionId.substringAfter(stateDelimiter,"")
+
+        val state = if(ocdDivisionId.contains(districtDelimiter)){
+            ocdDivisionId.substringAfter(districtDelimiter,"")
                 .substringBefore("/")
+        } else {
+            ocdDivisionId.substringAfter(stateDelimiter,"")
+                .substringBefore("/")
+        }
+
         return Division(ocdDivisionId, country, state)
     }
 

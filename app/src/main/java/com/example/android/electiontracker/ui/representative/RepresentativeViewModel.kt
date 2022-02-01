@@ -73,7 +73,7 @@ class RepresentativeViewModel(private var savedStateHandle: SavedStateHandle) : 
                 }
 
                 setRepresentativesList(representativeList)
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 _showSnackbarMessage.value = R.string.error_representative_search
                 e.printStackTrace()
             }
