@@ -6,7 +6,7 @@ This app demonstrates the following views and techniques:
 
 * [Retrofit](https://square.github.io/retrofit/) to make api calls to an HTTP web service.
 * [Moshi](https://github.com/square/moshi) which handles the deserialization of the returned JSON to Kotlin data objects. 
-* [Glide](https://bumptech.github.io/glide/) to load and cache images by URL.
+* [Coil](https://github.com/coil-kt/coil) to load and cache images by URL.
 * [Room](https://developer.android.com/training/data-storage/room) for local database storage.
   
 It leverages the following components from the Jetpack library:
