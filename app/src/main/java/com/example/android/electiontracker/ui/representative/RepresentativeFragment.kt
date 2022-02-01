@@ -97,7 +97,7 @@ class RepresentativeFragment : Fragment() {
         })
 
         viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
-            if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT){
+            if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT) {
                 Snackbar.make(requireView(), getText(it), Snackbar.LENGTH_SHORT).show()
                 viewModel.clearSnackbarMessage()
             }
@@ -122,7 +122,11 @@ class RepresentativeFragment : Fragment() {
         } else {
             val hasConnection = checkHasInternetConnection()
             if (hasConnection == null || !hasConnection) {
-                Snackbar.make(binding.root, R.string.error_no_internet_detected, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    binding.root,
+                    R.string.error_no_internet_detected,
+                    Snackbar.LENGTH_SHORT
+                ).show()
             } else {
                 viewModel.getRepresentatives()
             }
