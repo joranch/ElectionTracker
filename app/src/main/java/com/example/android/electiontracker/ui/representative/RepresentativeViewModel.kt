@@ -18,11 +18,9 @@ class RepresentativeViewModel(private var savedStateHandle: SavedStateHandle) : 
 
         const val ADDRESS_KEY = "address_key"
         const val REPRESENTATIVES_KEY = "reps_key"
-        const val STATE_INDEX_KEY = "selected_state_index_key"
         const val MOTION_LAYOUT_STATE_KEY = "motion_layout_state_id"
     }
 
-    //    private var _representatives = MutableLiveData<List<Representative>>()
     val representatives: LiveData<List<Representative>> = savedStateHandle.getLiveData(
         REPRESENTATIVES_KEY
     )
@@ -61,7 +59,6 @@ class RepresentativeViewModel(private var savedStateHandle: SavedStateHandle) : 
     fun getRepresentatives() {
         viewModelScope.launch {
             try {
-//                _address.value?.state = getSelectedState(selectedStateIndex.value!!)
                 savedStateHandle.get<Address>(ADDRESS_KEY)?.state =
                     getSelectedState(selectedStateIndex.value!!)
 

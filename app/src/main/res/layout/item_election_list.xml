@@ -13,31 +13,37 @@
             type="com.example.android.electiontracker.ui.election.adapter.ElectionListAdapter.ElectionListener" />
     </data>
 
-        <LinearLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="@{() -> clickListener.onClick(election)}">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding"
-            android:clickable="true"
-            android:onClick="@{() -> clickListener.onClick(election)}"
-            >
+            android:layout_margin="@dimen/small_margin"
+            android:text="@{election.name}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toTopOf="@+id/detail_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Some election somewhere" />
 
-            <TextView
-                android:id="@+id/title_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:text="@{election.name}"
-                tools:text="Some election somewhere" />
-
-            <TextView
-                android:id="@+id/detail_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/small_margin"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:text="@{election.electionDay.toString()}"
-                tools:text="Mon Jan 1 00:00 EDT 2022" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/detail_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:text="@{election.electionDay.toString()}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_text"
+            tools:text="Mon Jan 1 00:00 EDT 2022" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
