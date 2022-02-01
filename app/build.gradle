@@ -1,9 +1,10 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlinx-serialization'
-apply plugin: 'androidx.navigation.safeargs'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs'
+}
 
 android {
     compileSdkVersion 31
@@ -24,9 +25,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    androidExtensions {
-        experimental = true
-    }
+//    androidExtensions {
+//        experimental = true
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -41,6 +42,9 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:1.4.1"
 
+    // Core with Ktx
+    implementation "androidx.core:core-ktx:$version_core"
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version_kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
@@ -53,13 +57,12 @@ dependencies {
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version_lifecycle"
 
     // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.0"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.0"
 
-    // Core with Ktx
-    implementation "androidx.core:core-ktx:$version_core"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"

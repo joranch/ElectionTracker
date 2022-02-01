@@ -56,20 +56,24 @@ class RepresentativeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentRepresentativeBinding.inflate(inflater, container, false)
+        _binding = FragmentRepresentativeBinding.inflate(inflater)
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.setStates(resources.getStringArray(R.array.states).toList())
+
+        listAdapter = RepresentativeListAdapter()
+        binding.representativesRecyclerView.adapter = listAdapter
+
+        setUpClickListeners()
+        setUpObservers()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setStates(resources.getStringArray(R.array.states).toList())
 
-        listAdapter = RepresentativeListAdapter()
-        binding.representativesRecyclerView.adapter = listAdapter
-        binding.state.setSelection(0)
-        setUpClickListeners()
-        setUpObservers()
     }
 
     private fun setUpObservers() {
@@ -77,13 +81,13 @@ class RepresentativeFragment : Fragment() {
             it?.let { listAdapter.submitList(it) }
         })
 
-        viewModel.address.observe(viewLifecycleOwner, { address ->
-            binding.addressLineText.setText(address.line1)
-            binding.addressLine2Text.setText(address.line2)
-            binding.cityText.setText(address.city)
-            binding.zipText.setText(address.zip)
-            binding.state.setSelection(viewModel.getSelectedAddressStateIndex())
-        })
+//        viewModel.address.observe(viewLifecycleOwner, { address ->
+//            binding.addressLineText.setText(address.line1)
+//            binding.addressLine2Text.setText(address.line2)
+//            binding.cityText.setText(address.city)
+//            binding.zipText.setText(address.zip)
+//            binding.state.setSelection(viewModel.getSelectedAddressStateIndex())
+//        })
 
         viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
             if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT)
@@ -109,14 +113,15 @@ class RepresentativeFragment : Fragment() {
             YoYo.with(Techniques.Pulse).duration(500).repeat(3).playOn(binding.state)
             Snackbar.make(binding.root, R.string.error_state_required, Snackbar.LENGTH_SHORT).show()
         } else {
-            val address = viewModel.createAndSetAddress(
-                binding.addressLineText.text.toString(),
-                binding.addressLine2Text.text.toString(),
-                binding.cityText.text.toString(),
-                binding.zipText.text.toString(),
-                binding.state.selectedItemPosition,
-            )
-            viewModel.getRepresentatives(address)
+//            val address = viewModel.createAndSetAddress(
+//                binding.addressLineText.text.toString(),
+//                binding.addressLine2Text.text.toString(),
+//                binding.cityText.text.toString(),
+//                binding.zipText.text.toString(),
+//                binding.state.selectedItemPosition,
+//            )
+//            viewModel.getRepresentatives(address)
+            viewModel.getRepresentatives()
         }
     }
 

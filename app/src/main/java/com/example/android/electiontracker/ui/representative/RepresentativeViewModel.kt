@@ -1,9 +1,8 @@
 package com.example.android.electiontracker.ui.representative
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.model.LoadingState
 import com.example.android.electiontracker.model.Representative
@@ -31,22 +30,27 @@ class RepresentativeViewModel : ViewModel() {
     private var _showSnackbarMessage = MutableLiveData<Int>()
     val showSnackbarMessage: LiveData<Int> = _showSnackbarMessage
 
+    val selectedStateIndex = MutableLiveData<Int>(0)
+
+    init {
+        _address.value = Address("", "","","","")
+    }
+
     fun setAddress(address: Address) {
         _address.value = address
+        selectedStateIndex.value = getSelectedAddressStateIndex()
     }
 
     fun setStates(states: List<String>) {
         _states.value = states
     }
 
-    fun getSelectedAddressStateIndex() : Int {
-        return states.value?.indexOf(address.value?.state) ?: STATE_NOT_SELECTED
-    }
-
-    fun getRepresentatives(address: Address) {
+    fun getRepresentatives() {
         viewModelScope.launch {
             try {
-                val addressStr = address.toFormattedString()
+                _address.value?.state = getSelectedState(selectedStateIndex.value!!)
+                val addressStr = address.value!!.toFormattedString()
+                Log.e(TAG, addressStr)
                 val representativeResponse = CivicsApi.getRepresentatives(addressStr)
 
                 val representativeList = representativeResponse.offices.flatMap { office ->
@@ -65,23 +69,27 @@ class RepresentativeViewModel : ViewModel() {
         _showSnackbarMessage.value = ElectionsViewModel.EMPTY_SNACKBAR_INT
     }
 
+//    fun createAndSetAddress(
+//        line1: String,
+//        line2: String,
+//        city: String,
+//        zip: String,
+//        stateIndex: Int
+//    ): Address {
+//        val address = Address(
+//            line1, line2, city, getSelectedState(stateIndex), zip
+//        )
+//
+//        _address.value = address
+//        return address
+//
+//    }
+
     private fun getSelectedState(stateIndex: Int): String {
         return states.value?.get(stateIndex) ?: ""
     }
 
-    fun createAndSetAddress(
-        line1: String,
-        line2: String,
-        city: String,
-        zip: String,
-        stateIndex: Int
-    ): Address {
-        val address = Address(
-            line1, line2, city, getSelectedState(stateIndex), zip
-        )
-
-        _address.value = address
-        return address
-
+    private fun getSelectedAddressStateIndex() : Int {
+        return states.value?.indexOf(address.value?.state) ?: STATE_NOT_SELECTED
     }
 }
