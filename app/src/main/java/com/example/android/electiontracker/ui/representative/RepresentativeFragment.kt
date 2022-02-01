@@ -8,6 +8,8 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -17,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.daimajia.androidanimations.library.Techniques
@@ -117,8 +120,26 @@ class RepresentativeFragment : Fragment() {
             YoYo.with(Techniques.Pulse).duration(500).repeat(3).playOn(binding.state)
             Snackbar.make(binding.root, R.string.error_state_required, Snackbar.LENGTH_SHORT).show()
         } else {
-            viewModel.getRepresentatives()
+            val hasConnection = checkHasInternetConnection()
+            if (hasConnection == null || !hasConnection) {
+                Snackbar.make(binding.root, R.string.error_no_internet_detected, Snackbar.LENGTH_SHORT).show()
+            } else {
+                viewModel.getRepresentatives()
+            }
         }
+    }
+
+    private fun checkHasInternetConnection(): Boolean? {
+        val connectivityManager =
+            getSystemService(requireActivity(), ConnectivityManager::class.java)
+
+        val connected = connectivityManager?.run {
+            val currentNetwork = this.activeNetwork
+            val caps = this.getNetworkCapabilities(currentNetwork)
+            caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        }
+
+        return connected
     }
 
     private fun checkLocationPermissions(): Boolean {

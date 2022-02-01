@@ -1,6 +1,7 @@
 package com.example.android.electiontracker.ui.representative
 
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.*
 import com.example.android.electiontracker.R
 import com.example.android.electiontracker.model.Representative

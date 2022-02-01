@@ -20,6 +20,7 @@
     <string name="error_location_parse_geocode">Something went wrong finding your location</string>
     <string name="error_representative_search">Something went wrong looking up your representative</string>
     <string name="error_state_required">Please select a state to begin search</string>
+    <string name="error_no_internet_detected">No internet connection detected</string>
     <string name="voter_info_fragment_title">Voter information</string>
     <string name="error_loading_elections">Failed to retrieve election information</string>
     <string name="representative_search">Representative search</string>
