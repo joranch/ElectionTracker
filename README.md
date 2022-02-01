@@ -1,6 +1,6 @@
-## Political Preparedness
+## ElectionTracker
 
-PolitcalPreparedness is an example application built to demonstrate core Android Development skills as presented in the Udacity Android Developers Kotlin curriculum. 
+ElectionTracker is an example application built to demonstrate core Android Development skills. 
 
 This app demonstrates the following views and techniques:
 
