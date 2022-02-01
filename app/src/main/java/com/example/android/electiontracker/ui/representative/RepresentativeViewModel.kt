@@ -1,28 +1,33 @@
 package com.example.android.electiontracker.ui.representative
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.android.electiontracker.R
-import com.example.android.electiontracker.model.LoadingState
 import com.example.android.electiontracker.model.Representative
 import com.example.android.electiontracker.network.CivicsApi
 import com.example.android.electiontracker.network.models.Address
 import com.example.android.electiontracker.ui.election.ElectionsViewModel
 import kotlinx.coroutines.launch
 
-class RepresentativeViewModel : ViewModel() {
+
+class RepresentativeViewModel(private var savedStateHandle: SavedStateHandle) : ViewModel() {
 
     companion object {
         const val TAG = "RepresentativeViewModel"
         const val STATE_NOT_SELECTED = 0
+
+        const val ADDRESS_KEY = "address_key"
+        const val REPRESENTATIVES_KEY = "reps_key"
+        const val STATE_INDEX_KEY = "selected_state_index_key"
+        const val MOTION_LAYOUT_STATE_KEY = "motion_layout_state_id"
     }
 
-    private var _representatives = MutableLiveData<List<Representative>>()
-    val representatives: LiveData<List<Representative>> = _representatives
+    //    private var _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>> = savedStateHandle.getLiveData(
+        REPRESENTATIVES_KEY
+    )
 
-    private var _address = MutableLiveData<Address>()
-    val address: LiveData<Address> = _address
+    val address: LiveData<Address> = savedStateHandle.getLiveData(ADDRESS_KEY)
 
     private val _states = MutableLiveData<List<String>>()
     val states: LiveData<List<String>> = _states
@@ -33,12 +38,20 @@ class RepresentativeViewModel : ViewModel() {
     val selectedStateIndex = MutableLiveData<Int>(0)
 
     init {
-        _address.value = Address("", "","","","")
+        if (savedStateHandle.get<Address>(ADDRESS_KEY) == null) {
+            savedStateHandle.set(ADDRESS_KEY, Address("", "", "", "", ""))
+        }
+        selectedStateIndex.value = getSelectedAddressStateIndex()
+
     }
 
     fun setAddress(address: Address) {
-        _address.value = address
+        savedStateHandle.set(ADDRESS_KEY, address)
         selectedStateIndex.value = getSelectedAddressStateIndex()
+    }
+
+    fun setRepresentativesList(list: List<Representative>) {
+        savedStateHandle.set(REPRESENTATIVES_KEY, list)
     }
 
     fun setStates(states: List<String>) {
@@ -48,16 +61,20 @@ class RepresentativeViewModel : ViewModel() {
     fun getRepresentatives() {
         viewModelScope.launch {
             try {
-                _address.value?.state = getSelectedState(selectedStateIndex.value!!)
+//                _address.value?.state = getSelectedState(selectedStateIndex.value!!)
+                savedStateHandle.get<Address>(ADDRESS_KEY)?.state =
+                    getSelectedState(selectedStateIndex.value!!)
+
                 val addressStr = address.value!!.toFormattedString()
                 Log.e(TAG, addressStr)
+
                 val representativeResponse = CivicsApi.getRepresentatives(addressStr)
 
                 val representativeList = representativeResponse.offices.flatMap { office ->
                     office.getRepresentatives(representativeResponse.officials)
                 }
 
-                _representatives.value = representativeList
+                setRepresentativesList(representativeList)
             } catch (e: Throwable) {
                 _showSnackbarMessage.value = R.string.error_representative_search
                 e.printStackTrace()
@@ -69,27 +86,11 @@ class RepresentativeViewModel : ViewModel() {
         _showSnackbarMessage.value = ElectionsViewModel.EMPTY_SNACKBAR_INT
     }
 
-//    fun createAndSetAddress(
-//        line1: String,
-//        line2: String,
-//        city: String,
-//        zip: String,
-//        stateIndex: Int
-//    ): Address {
-//        val address = Address(
-//            line1, line2, city, getSelectedState(stateIndex), zip
-//        )
-//
-//        _address.value = address
-//        return address
-//
-//    }
-
     private fun getSelectedState(stateIndex: Int): String {
         return states.value?.get(stateIndex) ?: ""
     }
 
-    private fun getSelectedAddressStateIndex() : Int {
+    private fun getSelectedAddressStateIndex(): Int {
         return states.value?.indexOf(address.value?.state) ?: STATE_NOT_SELECTED
     }
 }

@@ -26,6 +26,7 @@ import com.example.android.electiontracker.R
 import com.example.android.electiontracker.databinding.FragmentRepresentativeBinding
 import com.example.android.electiontracker.network.models.Address
 import com.example.android.electiontracker.ui.election.ElectionsViewModel
+import com.example.android.electiontracker.ui.representative.RepresentativeViewModel.Companion.MOTION_LAYOUT_STATE_KEY
 import com.example.android.politicalpreparedness.ui.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -74,20 +75,23 @@ class RepresentativeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        savedInstanceState?.let {
+            it.getInt(MOTION_LAYOUT_STATE_KEY)?.let { stateId ->
+                binding.motionLayout.transitionToState(stateId)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val layoutState = binding.motionLayout.currentState
+        outState.putInt(MOTION_LAYOUT_STATE_KEY, layoutState)
     }
 
     private fun setUpObservers() {
         viewModel.representatives.observe(viewLifecycleOwner, {
             it?.let { listAdapter.submitList(it) }
         })
-
-//        viewModel.address.observe(viewLifecycleOwner, { address ->
-//            binding.addressLineText.setText(address.line1)
-//            binding.addressLine2Text.setText(address.line2)
-//            binding.cityText.setText(address.city)
-//            binding.zipText.setText(address.zip)
-//            binding.state.setSelection(viewModel.getSelectedAddressStateIndex())
-//        })
 
         viewModel.showSnackbarMessage.observe(viewLifecycleOwner, {
             if (it != ElectionsViewModel.EMPTY_SNACKBAR_INT)
@@ -113,14 +117,6 @@ class RepresentativeFragment : Fragment() {
             YoYo.with(Techniques.Pulse).duration(500).repeat(3).playOn(binding.state)
             Snackbar.make(binding.root, R.string.error_state_required, Snackbar.LENGTH_SHORT).show()
         } else {
-//            val address = viewModel.createAndSetAddress(
-//                binding.addressLineText.text.toString(),
-//                binding.addressLine2Text.text.toString(),
-//                binding.cityText.text.toString(),
-//                binding.zipText.text.toString(),
-//                binding.state.selectedItemPosition,
-//            )
-//            viewModel.getRepresentatives(address)
             viewModel.getRepresentatives()
         }
     }
